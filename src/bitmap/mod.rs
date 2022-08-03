@@ -33,7 +33,7 @@ pub use self::iter::Iter;
 /// rb.insert(7);
 /// println!("total bits set to true: {}", rb.len());
 /// ```
-#[derive(Hash, PartialEq)]
+#[derive(Hash, Eq, PartialEq)]
 pub struct RoaringBitmap {
     containers: Vec<container::Container>,
 }

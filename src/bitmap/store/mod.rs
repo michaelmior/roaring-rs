@@ -13,7 +13,7 @@ use self::Store::{Array, Bitmap};
 pub use self::array_store::ArrayStore;
 pub use self::bitmap_store::{BitmapIter, BitmapStore};
 
-#[derive(Clone, Hash)]
+#[derive(Eq, Clone, Hash)]
 pub enum Store {
     Array(ArrayStore),
     Bitmap(BitmapStore),
