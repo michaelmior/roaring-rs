@@ -1,5 +1,7 @@
 use itertools::Itertools;
 use std::cmp::Reverse;
+use std::collections::hash_map::DefaultHasher;
+use std::hash::Hash;
 use std::ops::{BitAnd, BitAndAssign, BitOr, BitOrAssign, BitXor, BitXorAssign, Sub, SubAssign};
 
 use criterion::measurement::Measurement;
@@ -180,6 +182,24 @@ fn len(c: &mut Criterion) {
             b.iter(|| {
                 for bitmap in &dataset.bitmaps {
                     black_box(bitmap.len());
+                }
+            });
+        });
+    }
+
+    group.finish();
+}
+
+fn hash(c: &mut Criterion) {
+    let mut group = c.benchmark_group("hash");
+
+    for dataset in Datasets {
+        group.throughput(Throughput::Elements(dataset.bitmaps.iter().map(|rb| rb.len()).sum()));
+        group.bench_function(BenchmarkId::new("hash", &dataset.name), |b| {
+            let mut hasher = DefaultHasher::new();
+            b.iter(|| {
+                for bitmap in &dataset.bitmaps {
+                    black_box(bitmap.hash(&mut hasher));
                 }
             });
         });
@@ -656,6 +676,7 @@ criterion_group!(
     insert,
     contains,
     len,
+    hash,
     rank,
     select,
     and,

@@ -7,7 +7,7 @@ use super::ArrayStore;
 
 pub const BITMAP_LENGTH: usize = 1024;
 
-#[derive(Clone, Eq, PartialEq)]
+#[derive(Clone, Eq, PartialEq, Hash)]
 pub struct BitmapStore {
     len: u64,
     bits: Box<[u64; BITMAP_LENGTH]>,
