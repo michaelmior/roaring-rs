@@ -8,7 +8,7 @@ use super::util;
 
 const ARRAY_LIMIT: u64 = 4096;
 
-#[derive(PartialEq, Clone)]
+#[derive(Eq, PartialEq, Clone)]
 pub struct Container {
     pub key: u16,
     pub store: Store,

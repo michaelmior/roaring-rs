@@ -16,6 +16,8 @@ mod ops;
 mod serde;
 mod serialization;
 
+use std::hash::{Hash, Hasher};
+
 use self::cmp::Pairs;
 pub use self::iter::IntoIter;
 pub use self::iter::Iter;
@@ -36,7 +38,15 @@ pub use self::iter::Iter;
 /// rb.insert(7);
 /// println!("total bits set to true: {}", rb.len());
 /// ```
-#[derive(PartialEq)]
+#[derive(Eq, PartialEq)]
 pub struct RoaringBitmap {
     containers: Vec<container::Container>,
+}
+
+impl Hash for RoaringBitmap {
+    fn hash<H: Hasher>(&self, state: &mut H) {
+        for n in self.iter() {
+            n.hash(state);
+        }
+    }
 }
